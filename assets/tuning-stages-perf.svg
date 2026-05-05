@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="barDim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#555"/>
+      <stop offset="100%" stop-color="#444"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#774422"/>
+      <stop offset="100%" stop-color="#663318"/>
+    </linearGradient>
+    <linearGradient id="bar3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#995533"/>
+      <stop offset="100%" stop-color="#884422"/>
+    </linearGradient>
+    <linearGradient id="bar4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cc5529"/>
+      <stop offset="100%" stop-color="#bb4420"/>
+    </linearGradient>
+    <linearGradient id="bar5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff8c5a"/>
+      <stop offset="100%" stop-color="#ff6b35"/>
+    </linearGradient>
+    <filter id="glowBar" x="-10%" y="-5%" width="120%" height="110%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0.42 0 0 0 0  0.21 0 0 0 0  0 0 0 0.45 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowText" x="-20%" y="-30%" width="140%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0.42 0 0 0 0  0.21 0 0 0 0  0 0 0 0.5 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="760" height="500" fill="#0a0a0a" rx="8"/>
+
+  <!-- Title -->
+  <text x="380" y="32" text-anchor="middle" fill="#ff6b35" font-size="16" font-weight="700" filter="url(#glowText)">1024x1024 f32 Matmul — Progressive Schedule Tuning</text>
+  <text x="380" y="52" text-anchor="middle" fill="#ccc" font-size="11">Ryzen 7 7800X3D, 16 threads pinned, AVX-512 | Measured peak: ~1057 GFLOPS</text>
+
+  <!-- Y-axis label -->
+  <text x="28" y="220" text-anchor="middle" fill="#ddd" font-size="11" font-weight="600" transform="rotate(-90 28 220)">GFLOPS</text>
+
+  <g transform="translate(80, 72)">
+    <!-- Grid lines -->
+    <line x1="0" y1="300" x2="620" y2="300" stroke="#333" stroke-width="1"/>
+    <line x1="0" y1="245.5" x2="620" y2="245.5" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="0" y1="190.9" x2="620" y2="190.9" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="0" y1="136.4" x2="620" y2="136.4" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="0" y1="81.8" x2="620" y2="81.8" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="0" y1="27.3" x2="620" y2="27.3" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+    <!-- Y-axis labels (scale: 300px for 1100 GFLOPS, y = 300 - v/1100*300) -->
+    <text x="-10" y="304" text-anchor="end" fill="#ccc" font-size="10">0</text>
+    <text x="-10" y="249" text-anchor="end" fill="#ccc" font-size="10">200</text>
+    <text x="-10" y="195" text-anchor="end" fill="#ccc" font-size="10">400</text>
+    <text x="-10" y="140" text-anchor="end" fill="#ccc" font-size="10">600</text>
+    <text x="-10" y="86" text-anchor="end" fill="#ccc" font-size="10">800</text>
+    <text x="-10" y="31" text-anchor="end" fill="#ccc" font-size="10">1000</text>
+
+    <!-- Peak reference line at 1057: y = 300 - 1057/1100*300 = 11.7 -->
+    <line x1="0" y1="11.7" x2="620" y2="11.7" stroke="#ff6b35" stroke-width="1" stroke-dasharray="6,3" opacity="0.3"/>
+    <text x="625" y="16" fill="#ff6b35" font-size="9" opacity="0.7">1057 peak</text>
+
+    <!-- Bars: y_top = 300 - (v/1100*300), height = v/1100*300 -->
+
+    <!-- Stage 0: Naive = 0.8, height ≈ 0.2px → min 3px visible -->
+    <rect x="20" y="297" width="90" height="3" fill="url(#barDim)" rx="1"/>
+    <text x="65" y="286" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">0.8</text>
+    <text x="65" y="324" text-anchor="middle" fill="#ddd" font-size="9.5">No schedule</text>
+
+    <!-- Stage 1: Tiled = 0.6, height ≈ 0.2px → min 3px -->
+    <rect x="140" y="297" width="90" height="3" fill="url(#bar2)" rx="1"/>
+    <text x="185" y="286" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">0.6</text>
+    <text x="185" y="324" text-anchor="middle" fill="#ddd" font-size="9.5">tile [64,64,64]</text>
+
+    <!-- Stage 2: Parallel = 9.3, height = 2.5px → min 3px -->
+    <rect x="260" y="297" width="90" height="3" fill="url(#bar3)" rx="1"/>
+    <text x="305" y="286" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">9.3</text>
+    <text x="305" y="324" text-anchor="middle" fill="#ddd" font-size="9.5">+ parallel</text>
+
+    <!-- Stage 3: Unroll = 9.9, height = 2.7px → min 3px -->
+    <rect x="380" y="297" width="90" height="3" fill="url(#bar4)" rx="1"/>
+    <text x="425" y="286" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">9.9</text>
+    <text x="425" y="324" text-anchor="middle" fill="#ddd" font-size="9.5">+ unroll j 4</text>
+
+    <!-- Stage 4: Microkernel = 1045, height = 1045/1100*300 = 285px -->
+    <rect x="510" y="15" width="100" height="285" fill="url(#bar5)" rx="3" filter="url(#glowBar)"/>
+    <text x="560" y="7" text-anchor="middle" fill="#ff6b35" font-size="14" font-weight="700" filter="url(#glowText)">1045</text>
+    <text x="560" y="324" text-anchor="middle" fill="#ff6b35" font-size="9.5" font-weight="600">+ microkernel f32 [32]</text>
+
+    <!-- Speedup annotation inside bar -->
+    <text x="560" y="150" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">1300x</text>
+    <text x="560" y="170" text-anchor="middle" fill="#fff" font-size="10" opacity="0.8">vs naive</text>
+  </g>
+
+  <!-- Footer — pushed well below stage labels -->
+  <text x="380" y="420" text-anchor="middle" fill="#999" font-size="10">Same kernel source, different Lum schedules</text>
+  <text x="380" y="436" text-anchor="middle" fill="#999" font-size="9.5">taskset -c 0-15, OMP pinned. Best of 20 iterations.</text>
+
+  <!-- Narrative below footer -->
+  <rect x="80" y="452" width="600" height="30" rx="5" fill="#ff6b35" opacity="0.04" stroke="#ff6b35" stroke-width="0.4"/>
+  <text x="380" y="472" text-anchor="middle" fill="#ddd" font-size="9.5">Stages 1-4 are invisible at this scale — the microkernel is where 99% of the speedup comes from</text>
+</svg>

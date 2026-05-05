@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blaze SDK — High-Performance ML Kernels</title>
+    <meta name="description" content="Blaze SDK — Write scalar loops, get hardware-optimized kernels for x86, ARM, CUDA, and Metal. From ByteInfer Labs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="blaze-page">
+    <div class="noise-overlay"></div>
+
+    <!-- Nav bar -->
+    <nav class="topnav">
+        <a href="index.html" class="topnav-brand">
+            <img src="flame-transparent.png" alt="" class="topnav-flame">
+            ByteInfer
+        </a>
+        <div class="topnav-links">
+            <a href="blaze.html" class="active">Blaze</a>
+            <a href="mailto:hello@byteinfer.ai">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="blaze-hero">
+        <div class="blaze-hero-content">
+            <div class="blaze-hero-title">
+                <img src="flame-transparent.png" alt="" class="blaze-hero-flame">
+                <h1>Blaze <span class="blaze-badge">SDK</span></h1>
+            </div>
+            <p class="blaze-hero-sub">A DSL compiler for high-performance ML kernels.</p>
+            <p class="blaze-hero-desc">Write plain scalar loops — no intrinsics, no CUDA, no shader code.<br>The compiler turns them into hardware-optimized kernels across every backend.</p>
+            <div class="blaze-hero-actions">
+                <span class="cta-btn cta-btn-dim">Coming Soon</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Numbers Strip -->
+    <section class="numbers-strip">
+        <div class="numbers-strip-inner">
+            <div class="strip-number">
+                <span class="strip-value">127.6</span>
+                <span class="strip-unit">TFLOPS</span>
+                <span class="strip-label">BF16 Matmul</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">1200</span>
+                <span class="strip-unit">tok/s</span>
+                <span class="strip-label">Stories110M · CUDA</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">2565</span>
+                <span class="strip-unit">GB/s</span>
+                <span class="strip-label">INT8 Matvec · 138% cuBLASLt</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">1300×</span>
+                <span class="strip-unit"></span>
+                <span class="strip-label">Schedule speedup</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">5</span>
+                <span class="strip-unit">backends</span>
+                <span class="strip-label">From one source</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-sub">The kernel defines what to compute. The schedule defines how fast.</p>
+
+        <div class="how-columns">
+            <div class="how-col">
+                <div class="how-step">1</div>
+                <h3>Write</h3>
+                <p class="how-file">kernel.blz</p>
+                <pre class="code-block"><code><span class="kw">fn</span> <span class="fn">kernel_main</span>(A: <span class="ty">array[f32]</span>,
+    B: <span class="ty">array[f32]</span>, C: <span class="ty">array[f32]</span>,
+    M: <span class="ty">i32</span>, N: <span class="ty">i32</span>, K: <span class="ty">i32</span>) {
+  <span class="kw">for</span> (<span class="kw">var</span> i = 0i; i &lt; M; i = i + 1i)
+    <span class="kw">for</span> (<span class="kw">var</span> j = 0i; j &lt; N; j = j + 1i)
+      <span class="kw">for</span> (<span class="kw">var</span> k = 0i; k &lt; K; k = k + 1i)
+        C[i*N+j] = C[i*N+j]
+          + A[i*K+k] * B[k*N+j];
+}</code></pre>
+                <p class="how-note">Plain scalar loops. No intrinsics.</p>
+            </div>
+
+            <div class="how-arrow">→</div>
+
+            <div class="how-col">
+                <div class="how-step">2</div>
+                <h3>Schedule</h3>
+                <p class="how-file">matmul.lum</p>
+                <pre class="code-block"><code><span class="kw">schedule</span> <span class="fn">MatMul</span>(<span class="ty">blaze.loop_nest</span>) {
+  tile [64, 64, 64]
+  parallel
+  unroll j 4
+  microkernel f32 [32]
+}</code></pre>
+                <p class="how-note">Controls tiling, parallelism, vectorization.</p>
+            </div>
+
+            <div class="how-arrow">→</div>
+
+            <div class="how-col">
+                <div class="how-step">3</div>
+                <h3>Run</h3>
+                <p class="how-file">terminal</p>
+                <pre class="code-block code-terminal"><code><span class="prompt">$</span> blaze matmul.blz \
+    --schedule matmul.lum \
+    --emit-mlir -o kernel.o
+
+<span class="prompt">$</span> gcc -shared -o kernel.so \
+    kernel.o -lblaze_runtime
+
+<span class="dim">  1024×1024 f32 matmul</span>
+<span class="accent">  1045 GFLOPS</span> <span class="dim">(99% peak)</span></code></pre>
+                <p class="how-note">Same source. Any backend.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance -->
+    <section class="perf-section">
+        <h2 class="section-title">Performance</h2>
+        <p class="section-sub">Measured on Zen 4 (8 cores pinned) and RTX 4090. Best of 20 iterations.</p>
+
+        <div class="perf-grid">
+            <div class="perf-card">
+                <h3>GPU <span class="perf-hw">RTX 4090</span></h3>
+                <div class="perf-rows">
+                    <div class="perf-row">
+                        <span class="perf-kernel">BF16 Matmul 4096²</span>
+                        <span class="perf-val">127.6 TFLOPS</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">TF32 Matmul 4096²</span>
+                        <span class="perf-val">43.1 TFLOPS</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">FlashAttention N=8192</span>
+                        <span class="perf-val">137 TFLOPS</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">BF16 Matvec 11008×4096</span>
+                        <span class="perf-val">836 GB/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">INT8 Matvec</span>
+                        <span class="perf-val">2565 GB/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Stories110M</span>
+                        <span class="perf-val">1200 tok/s</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perf-card">
+                <h3>CPU <span class="perf-hw">Zen 4, 8 cores</span></h3>
+                <div class="perf-rows">
+                    <div class="perf-row">
+                        <span class="perf-kernel">F32 Matmul 1024²</span>
+                        <span class="perf-val">1045 GFLOPS</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Stories110M</span>
+                        <span class="perf-val">120+ tok/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Qwen 3.5 9B Q4K</span>
+                        <span class="perf-val">8 tok/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">LLaMA 3.2 3B Q4K+INT8</span>
+                        <span class="perf-val">22.6 tok/s</span>
+                    </div>
+                </div>
+                <div class="perf-callout">
+                    <div class="perf-callout-label">Same kernel, only the schedule changes</div>
+                    <div class="perf-callout-row">
+                        <span class="dim">No schedule</span>
+                        <span class="dim">0.8 GFLOPS</span>
+                    </div>
+                    <div class="perf-callout-row">
+                        <span class="accent">+ microkernel</span>
+                        <span class="accent">1045 GFLOPS (1300×)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Charts -->
+    <section class="charts-section">
+        <div class="charts-grid">
+            <div class="chart-card">
+                <img src="assets/tuning-stages-perf.svg" alt="Progressive schedule tuning — 0.8 to 1045 GFLOPS" class="chart-img">
+            </div>
+            <div class="chart-card">
+                <img src="assets/schedule-scaling.svg" alt="Schedule impact across matrix sizes" class="chart-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Backends -->
+    <section class="backends-section">
+        <h2 class="section-title">Backends</h2>
+        <p class="section-sub">One kernel source. Five hardware targets.</p>
+
+        <div class="backends-grid">
+            <div class="backend-card">
+                <div class="backend-icon">x86</div>
+                <h3>x86-64</h3>
+                <p>AVX-512 · VNNI · OpenMP</p>
+            </div>
+            <div class="backend-card">
+                <div class="backend-icon">ARM</div>
+                <h3>Apple Silicon</h3>
+                <p>NEON · SME · M-series</p>
+            </div>
+            <div class="backend-card">
+                <div class="backend-icon">GPU</div>
+                <h3>NVIDIA CUDA</h3>
+                <p>Tensor Cores · PTX · CUDA Graph</p>
+            </div>
+            <div class="backend-card">
+                <div class="backend-icon">MTL</div>
+                <h3>Metal</h3>
+                <p>Compute shaders · Apple GPU</p>
+            </div>
+            <div class="backend-card backend-experimental">
+                <div class="backend-icon">ANE</div>
+                <h3>Neural Engine</h3>
+                <p>Experimental · Private API</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Example -->
+    <section class="example-section">
+        <h2 class="section-title">From loops to hardware</h2>
+        <p class="section-sub">The compiler auto-detects loop nests from plain scalar code — no annotations, no pragmas, no intrinsics. The Lum schedule is the tuning surface.</p>
+
+        <div class="example-grid">
+            <div class="example-block">
+                <div class="example-label">Quantized LLM inference — Lum schedule</div>
+                <pre class="code-block"><code><span class="kw">schedule</span> <span class="fn">QwenDecode</span>(<span class="ty">blaze.loop_nest</span>) {
+  <span class="cm">// Shape dispatch — each matvec gets optimal tiling</span>
+  <span class="kw">where</span> bounds = [3584, 18944] {
+    tile [1, 3584, 592]
+    parallel
+    unroll j 4
+    microkernel q4k [32]
+    weight_format <span class="str">"q4k"</span>
+  }
+  <span class="kw">where</span> bounds = [18944, 3584] {
+    tile [1, 18944, 448]
+    parallel
+    unroll j 4
+    microkernel q4k [32]
+    weight_format <span class="str">"q4k"</span>
+  }
+}</code></pre>
+            </div>
+            <div class="example-block">
+                <div class="example-label">GPU Tensor Core schedule</div>
+                <pre class="code-block"><code><span class="kw">schedule</span> <span class="fn">BF16Matmul</span>(<span class="ty">blaze.loop_nest</span>) {
+  tile [128, 128, 32]
+  gpu_threads [16, 16]
+  warp_tiles [1, 8]
+  tile [8, 8, 1] register
+  maxnreg 160
+}
+
+<span class="cm">// 127.6 TFLOPS at 4096×4096</span>
+<span class="cm">// m16n8k16 BF16 MMA</span>
+<span class="cm">// cp.async + ldmatrix.trans</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-status">Blaze SDK Alpha — Coming Soon</div>
+            <div class="footer-links">
+                <a href="index.html">ByteInfer</a>
+                <span class="footer-dot">·</span>
+                <a href="blaze.html">Blaze</a>
+                <span class="footer-dot">·</span>
+                <a href="mailto:hello@byteinfer.ai">Contact</a>
+            </div>
+            <div class="footer-copy">© 2026 ByteInfer Labs. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

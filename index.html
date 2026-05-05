@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ByteInfer.ai — Coming Soon</title>
-    <meta name="description" content="ByteInfer Labs — Optimizing the world's models, one graph at a time.">
+    <title>ByteInfer Labs — Fast ML Inference, Built from First Principles</title>
+    <meta name="description" content="ByteInfer Labs — The infrastructure for fast ML inference, built from first principles.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,26 +15,76 @@
     <canvas id="graph-canvas"></canvas>
     <canvas id="neural-canvas"></canvas>
 
-    <main class="hero">
+    <!-- Hero -->
+    <section class="hero">
         <div class="hero-content">
-            <!-- Flame Logo -->
             <div class="logo-container">
                 <img src="flame-transparent.png" alt="" class="flame">
                 <div class="flame-glow"></div>
             </div>
 
-            <!-- Brand Name -->
             <h2 class="brand-name">ByteInfer Labs</h2>
 
-            <!-- Tagline -->
             <h1 class="tagline">
                 Inference has a new language<span class="cursor">_</span>
             </h1>
 
-            <!-- Coming Soon -->
-            <p class="coming-soon">Coming Soon</p>
+            <p class="subtitle">The infrastructure for fast ML inference — built from first principles.</p>
         </div>
-    </main>
+    </section>
+
+    <!-- Product Card -->
+    <section class="product-section">
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-info">
+                    <div class="product-header">
+                        <img src="flame-transparent.png" alt="" class="product-flame">
+                        <div>
+                            <h3 class="product-name">Blaze <span class="product-badge">SDK</span></h3>
+                            <p class="product-desc">Write scalar loops. Get optimized kernels for x86, ARM, CUDA, and Metal.</p>
+                        </div>
+                    </div>
+                    <a href="blaze.html" class="cta-btn">Learn more <span class="arrow">→</span></a>
+                </div>
+                <div class="product-numbers">
+                    <div class="number-item">
+                        <span class="number-value">127.6</span>
+                        <span class="number-unit">TFLOPS</span>
+                        <span class="number-label">BF16 Matmul · RTX 4090</span>
+                    </div>
+                    <div class="number-item">
+                        <span class="number-value">1200</span>
+                        <span class="number-unit">tok/s</span>
+                        <span class="number-label">Stories110M · CUDA</span>
+                    </div>
+                    <div class="number-item">
+                        <span class="number-value">1300×</span>
+                        <span class="number-unit"></span>
+                        <span class="number-label">Same source, different schedule</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="philosophy">
+        <p>You write the math. We handle the speed.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-status">Blaze SDK Alpha — Coming Soon</div>
+            <div class="footer-links">
+                <a href="blaze.html">Blaze</a>
+                <span class="footer-dot">·</span>
+                <a href="mailto:hello@byteinfer.ai">Contact</a>
+            </div>
+            <div class="footer-copy">© 2026 ByteInfer Labs. All rights reserved.</div>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

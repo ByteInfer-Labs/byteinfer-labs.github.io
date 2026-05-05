@@ -1,6 +1,6 @@
-// ByteInfer.ai — Animations
+// ByteInfer.ai — Animations & Interactions
 
-// Particle Background
+// Particle graph background
 class GraphCanvas {
     constructor() {
         this.canvas = document.getElementById('graph-canvas');
@@ -20,9 +20,7 @@ class GraphCanvas {
         });
     }
 
-    init() {
-        this.resize();
-    }
+    init() { this.resize(); }
 
     resize() {
         this.canvas.width = window.innerWidth;
@@ -33,7 +31,6 @@ class GraphCanvas {
     createNodes() {
         const count = Math.floor((window.innerWidth * window.innerHeight) / 30000);
         this.nodes = [];
-
         for (let i = 0; i < count; i++) {
             this.nodes.push({
                 x: Math.random() * this.canvas.width,
@@ -54,12 +51,10 @@ class GraphCanvas {
         for (const node of this.nodes) {
             node.x += node.vx;
             node.y += node.vy;
-
             if (node.x < 0) node.x = this.canvas.width;
             if (node.x > this.canvas.width) node.x = 0;
             if (node.y < 0) node.y = this.canvas.height;
             if (node.y > this.canvas.height) node.y = 0;
-
             if (this.mouse.x && this.mouse.y) {
                 const dist = this.distance(node, this.mouse);
                 if (dist < 120 && dist > 30) {
@@ -69,7 +64,6 @@ class GraphCanvas {
                     node.vy += Math.sin(angle) * force;
                 }
             }
-
             const speed = Math.sqrt(node.vx ** 2 + node.vy ** 2);
             if (speed > 0.6) {
                 node.vx = (node.vx / speed) * 0.6;
@@ -80,7 +74,6 @@ class GraphCanvas {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         const maxDist = 100;
         for (let i = 0; i < this.nodes.length; i++) {
             for (let j = i + 1; j < this.nodes.length; j++) {
@@ -96,7 +89,6 @@ class GraphCanvas {
                 }
             }
         }
-
         for (const node of this.nodes) {
             this.ctx.beginPath();
             this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
@@ -112,7 +104,7 @@ class GraphCanvas {
     }
 }
 
-// Fullscreen Neural Network Background
+// Neural network DAG background
 class NeuralBackground {
     constructor() {
         this.canvas = document.getElementById('neural-canvas');
@@ -126,13 +118,10 @@ class NeuralBackground {
 
         this.init();
         this.animate();
-
         window.addEventListener('resize', () => this.resize());
     }
 
-    init() {
-        this.resize();
-    }
+    init() { this.resize(); }
 
     resize() {
         this.canvas.width = window.innerWidth;
@@ -143,47 +132,33 @@ class NeuralBackground {
     createGraph() {
         this.nodes = [];
         this.edges = [];
-
         const w = this.canvas.width;
         const h = this.canvas.height;
         const padding = 60;
-
-        // Create a grid of nodes spanning the full screen
         const cols = 5;
         const rows = 3;
         const cellW = (w - padding * 2) / (cols - 1);
         const cellH = (h - padding * 2) / (rows - 1);
-
         let id = 0;
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < cols; col++) {
-                // Add some randomness to positions
                 const jitterX = (Math.random() - 0.5) * cellW * 0.4;
                 const jitterY = (Math.random() - 0.5) * cellH * 0.4;
-
                 this.nodes.push({
                     id: id++,
                     x: padding + col * cellW + jitterX,
                     y: padding + row * cellH + jitterY,
                     size: 5 + Math.random() * 6,
-                    col: col,
-                    row: row
+                    col, row
                 });
             }
         }
-
-        // Create DAG-like edges (connect to nodes ahead and nearby)
         for (const node of this.nodes) {
             const candidates = this.nodes.filter(n =>
-                n.col > node.col &&
-                n.col <= node.col + 2 &&
-                Math.abs(n.row - node.row) <= 1
+                n.col > node.col && n.col <= node.col + 2 && Math.abs(n.row - node.row) <= 1
             );
-
-            // Connect to 1-2 random candidates
             const shuffled = candidates.sort(() => Math.random() - 0.5);
             const connectCount = Math.min(shuffled.length, 1 + Math.floor(Math.random() * 2));
-
             for (let i = 0; i < connectCount; i++) {
                 this.edges.push({ from: node.id, to: shuffled[i].id });
             }
@@ -192,20 +167,14 @@ class NeuralBackground {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         this.pulseProgress += this.pulseSpeed;
         if (this.pulseProgress > 1) this.pulseProgress = 0;
-
-        // Draw edges with glowing activation
         for (let i = 0; i < this.edges.length; i++) {
             const edge = this.edges[i];
             const from = this.nodes[edge.from];
             const to = this.nodes[edge.to];
-
-            // Stagger activation based on edge index and column
             const phase = (this.pulseProgress + from.col * 0.15 + i * 0.02) % 1;
             const glow = Math.sin(phase * Math.PI) * 0.4;
-
             this.ctx.beginPath();
             this.ctx.moveTo(from.x, from.y);
             this.ctx.lineTo(to.x, to.y);
@@ -213,13 +182,9 @@ class NeuralBackground {
             this.ctx.lineWidth = 1 + glow * 2;
             this.ctx.stroke();
         }
-
-        // Draw nodes
         for (const node of this.nodes) {
-            // Node activation based on column timing
             const phase = (this.pulseProgress + node.col * 0.15) % 1;
             const activation = Math.sin(phase * Math.PI) * 0.3;
-
             this.ctx.beginPath();
             this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
             this.ctx.fillStyle = `rgba(255, 107, 53, ${0.2 + activation})`;
@@ -233,10 +198,81 @@ class NeuralBackground {
     }
 }
 
+// Scroll-triggered fade-in for Blaze page sections
+function initScrollAnimations() {
+    const targets = document.querySelectorAll(
+        '.numbers-strip, .how-section, .perf-section, .charts-section, ' +
+        '.backends-section, .example-section'
+    );
+    if (!targets.length) return;
+
+    targets.forEach(el => el.classList.add('fade-in'));
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    targets.forEach(el => observer.observe(el));
+}
+
+// Counter animation for number values
+function animateNumbers() {
+    const numberEls = document.querySelectorAll('.strip-value, .number-value');
+    if (!numberEls.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            if (el.dataset.animated) return;
+            el.dataset.animated = 'true';
+
+            const text = el.textContent.trim();
+            const hasX = text.includes('×');
+            const numStr = text.replace(/[×,]/g, '');
+            const num = parseFloat(numStr);
+            if (isNaN(num)) return;
+
+            const duration = 800;
+            const start = performance.now();
+            const suffix = hasX ? '×' : '';
+
+            function tick(now) {
+                const t = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - t, 3);
+                const current = num * ease;
+
+                if (Number.isInteger(num) && num >= 10) {
+                    el.textContent = Math.round(current) + suffix;
+                } else {
+                    el.textContent = current.toFixed(1).replace(/\.0$/, '') + suffix;
+                }
+
+                if (t < 1) requestAnimationFrame(tick);
+                else el.textContent = text;
+            }
+
+            el.textContent = '0' + suffix;
+            requestAnimationFrame(tick);
+        });
+    }, { threshold: 0.5 });
+
+    numberEls.forEach(el => observer.observe(el));
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new GraphCanvas();
     new NeuralBackground();
+    initScrollAnimations();
+    animateNumbers();
 });
 
 console.log('%c🔥 ByteInfer Labs', 'color: #ff6b35; font-size: 24px; font-weight: bold;');

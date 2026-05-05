@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="glowOr" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0.42 0 0 0 0  0.21 0 0 0 0  0 0 0 0.5 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowLine" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0.42 0 0 0 0  0.21 0 0 0 0  0 0 0 0.45 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="760" height="480" fill="#0a0a0a" rx="8"/>
+
+  <!-- Title -->
+  <text x="380" y="30" text-anchor="middle" fill="#ff6b35" font-size="15" font-weight="700" filter="url(#glowOr)">Schedule Impact Across Matrix Sizes</text>
+  <text x="380" y="48" text-anchor="middle" fill="#ccc" font-size="11">f32 matmul NxN, Ryzen 7 7800X3D, 16 threads pinned, AVX-512</text>
+
+  <!-- Legend + speedup callout — ABOVE chart, no overlap -->
+  <g transform="translate(90, 62)">
+    <!-- Speedup callout left -->
+    <rect x="0" y="0" width="220" height="44" fill="#ff6b35" opacity="0.06" rx="6" stroke="#ff6b35" stroke-width="0.8"/>
+    <text x="110" y="18" text-anchor="middle" fill="#ff6b35" font-size="13" font-weight="700" filter="url(#glowOr)">Up to 1300x speedup</text>
+    <text x="110" y="35" text-anchor="middle" fill="#ddd" font-size="10">Same kernel, only the .lum changes</text>
+
+    <!-- Legend right -->
+    <line x1="280" y1="8" x2="300" y2="8" stroke="#666" stroke-width="1.5"/>
+    <circle cx="290" cy="8" r="3" fill="#666"/>
+    <text x="308" y="12" fill="#ddd" font-size="10">No schedule — 0.8 GFLOPS (flat at zero)</text>
+
+    <line x1="280" y1="24" x2="300" y2="24" stroke="#cc5529" stroke-width="2"/>
+    <circle cx="290" cy="24" r="3" fill="#cc5529"/>
+    <text x="308" y="28" fill="#ddd" font-size="10">tile [64,64,64] parallel — 9.3 GFLOPS</text>
+
+    <line x1="280" y1="40" x2="300" y2="40" stroke="#ff6b35" stroke-width="2.5"/>
+    <circle cx="290" cy="40" r="3" fill="#ff6b35"/>
+    <text x="308" y="44" fill="#ff6b35" font-size="10" font-weight="600">+ microkernel f32 [32] — up to 1045 GFLOPS</text>
+  </g>
+
+  <!-- Chart area starts at y=120 -->
+  <g transform="translate(90, 120)">
+    <!-- Axes -->
+    <line x1="0" y1="280" x2="560" y2="280" stroke="#333" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="280" stroke="#333" stroke-width="1"/>
+
+    <!-- Y grid -->
+    <line x1="0" y1="229.1" x2="560" y2="229.1" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="0" y1="178.2" x2="560" y2="178.2" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="0" y1="127.3" x2="560" y2="127.3" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="0" y1="76.4" x2="560" y2="76.4" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="0" y1="25.5" x2="560" y2="25.5" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+    <!-- Y-axis labels -->
+    <text x="-10" y="284" text-anchor="end" fill="#ccc" font-size="10">0</text>
+    <text x="-10" y="233" text-anchor="end" fill="#ccc" font-size="10">200</text>
+    <text x="-10" y="182" text-anchor="end" fill="#ccc" font-size="10">400</text>
+    <text x="-10" y="131" text-anchor="end" fill="#ccc" font-size="10">600</text>
+    <text x="-10" y="80" text-anchor="end" fill="#ccc" font-size="10">800</text>
+    <text x="-10" y="29" text-anchor="end" fill="#ccc" font-size="10">1000</text>
+
+    <text x="-50" y="140" text-anchor="middle" fill="#ddd" font-size="11" font-weight="600" transform="rotate(-90 -50 140)">GFLOPS</text>
+
+    <!-- X-axis labels -->
+    <text x="56" y="298" text-anchor="middle" fill="#ccc" font-size="10">256</text>
+    <text x="168" y="298" text-anchor="middle" fill="#ccc" font-size="10">512</text>
+    <text x="280" y="298" text-anchor="middle" fill="#ccc" font-size="10">1024</text>
+    <text x="392" y="298" text-anchor="middle" fill="#ccc" font-size="10">2048</text>
+    <text x="504" y="298" text-anchor="middle" fill="#ccc" font-size="10">4096</text>
+    <text x="280" y="318" text-anchor="middle" fill="#ddd" font-size="11">Matrix size (N x N)</text>
+
+    <!-- Peak reference line -->
+    <line x1="0" y1="11.1" x2="560" y2="11.1" stroke="#ff6b35" stroke-width="1" stroke-dasharray="6,3" opacity="0.35"/>
+    <text x="565" y="15" fill="#ff6b35" font-size="9" opacity="0.7">1057 peak</text>
+
+    <!-- Data: Naive (dim, at bottom — visible but not labeled per-point) -->
+    <polyline points="56,279.4 168,279.7 280,279.8 392,279.9 504,279.9" fill="none" stroke="#666" stroke-width="1.5"/>
+    <circle cx="56" cy="279.4" r="3" fill="#666"/>
+    <circle cx="280" cy="279.8" r="3" fill="#666"/>
+    <circle cx="504" cy="279.9" r="3" fill="#666"/>
+
+    <!-- Data: Tiled + Parallel (dim orange, also near bottom) -->
+    <polyline points="56,270.9 168,275.2 280,277.6 392,277.6 504,278.2" fill="none" stroke="#cc5529" stroke-width="2"/>
+    <circle cx="56" cy="270.9" r="3.5" fill="#cc5529"/>
+    <circle cx="280" cy="277.6" r="3.5" fill="#cc5529"/>
+    <circle cx="504" cy="278.2" r="3.5" fill="#cc5529"/>
+
+    <!-- Data: Microkernel (bright orange with glow) -->
+    <polyline points="56,226.5 168,57.0 280,14.0 392,52.9 504,31.3" fill="none" stroke="#ff6b35" stroke-width="2.5" filter="url(#glowLine)"/>
+    <circle cx="56" cy="226.5" r="5" fill="#ff6b35"/>
+    <circle cx="168" cy="57.0" r="5" fill="#ff6b35"/>
+    <circle cx="280" cy="14.0" r="6" fill="#ff6b35"/>
+    <circle cx="392" cy="52.9" r="5" fill="#ff6b35"/>
+    <circle cx="504" cy="31.3" r="5" fill="#ff6b35"/>
+
+    <!-- Value labels — clear of lines -->
+    <text x="56" y="216" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">210</text>
+    <text x="168" y="47" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">876</text>
+    <text x="280" y="4" text-anchor="middle" fill="#ff6b35" font-size="11" font-weight="700" filter="url(#glowOr)">1045</text>
+    <text x="392" y="43" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">892</text>
+    <text x="504" y="21" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">977</text>
+  </g>
+
+  <!-- Footer — well below chart -->
+  <text x="380" y="462" text-anchor="middle" fill="#999" font-size="9.5">Naive and tiled+parallel lines flat near zero at this scale — the microkernel is where the performance comes from.</text>
+</svg>
