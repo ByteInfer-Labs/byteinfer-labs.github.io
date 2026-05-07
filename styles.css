@@ -497,19 +497,20 @@ body {
 }
 
 .numbers-strip-inner {
-    max-width: 960px;
+    max-width: 1080px;
     margin: 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     align-items: center;
     justify-content: center;
-    gap: 0;
-    flex-wrap: wrap;
+    gap: 20px 8px;
 }
 
 .strip-number {
+    box-sizing: border-box;
     text-align: center;
-    padding: 0 28px;
-    flex-shrink: 0;
+    min-width: 0;
+    padding: 0 10px;
 }
 
 .strip-value {
@@ -537,10 +538,7 @@ body {
 }
 
 .strip-sep {
-    width: 1px;
-    height: 40px;
-    background: var(--border);
-    flex-shrink: 0;
+    display: none;
 }
 
 /* ═══════════ BLAZE PAGE — SECTIONS COMMON ═══════════ */
@@ -654,21 +652,21 @@ body {
 /* ═══════════ BLAZE PAGE — PERFORMANCE ═══════════ */
 .perf-section {
     padding: 80px 2rem;
-    max-width: 900px;
+    max-width: 1080px;
     margin: 0 auto;
 }
 
 .perf-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 24px;
 }
 
 .perf-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 28px;
+    padding: 32px;
 }
 
 .perf-card h3 {
@@ -739,17 +737,26 @@ body {
 .perf-callout-row .dim { color: var(--text-dim); }
 .perf-callout-row .accent { color: var(--accent); font-weight: 600; }
 
+.perf-note {
+    margin: 18px auto 0;
+    max-width: 720px;
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
 /* ═══════════ BLAZE PAGE — CHARTS ═══════════ */
 .charts-section {
-    padding: 0 2rem 80px;
-    max-width: 960px;
+    padding: 0 2rem 96px;
+    max-width: 1120px;
     margin: 0 auto;
 }
 
 .charts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 24px;
 }
 
 .chart-card {
@@ -909,7 +916,11 @@ body {
     }
 
     .numbers-strip-inner {
-        gap: 16px;
+        max-width: 360px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 10px;
     }
 
     .strip-sep {
@@ -917,11 +928,24 @@ body {
     }
 
     .strip-number {
-        padding: 8px 16px;
+        min-width: 0;
+        padding: 8px 4px;
+    }
+
+    .strip-label {
+        overflow-wrap: anywhere;
     }
 }
 
 @media (max-width: 480px) {
+    .numbers-strip {
+        padding: 32px 1rem;
+    }
+
+    .strip-value {
+        font-size: 1.45rem;
+    }
+
     .backends-grid {
         grid-template-columns: repeat(2, 1fr);
     }

@@ -50,9 +50,21 @@
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">1200</span>
+                <span class="strip-value">1688</span>
                 <span class="strip-unit">tok/s</span>
-                <span class="strip-label">Stories110M · CUDA</span>
+                <span class="strip-label">9B prefill</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">98.7</span>
+                <span class="strip-unit">tok/s</span>
+                <span class="strip-label">9B decode</span>
+            </div>
+            <div class="strip-sep"></div>
+            <div class="strip-number">
+                <span class="strip-value">495</span>
+                <span class="strip-unit">tok/s</span>
+                <span class="strip-label">27B prefill</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
@@ -65,12 +77,6 @@
                 <span class="strip-value">1300×</span>
                 <span class="strip-unit"></span>
                 <span class="strip-label">Schedule speedup</span>
-            </div>
-            <div class="strip-sep"></div>
-            <div class="strip-number">
-                <span class="strip-value">5</span>
-                <span class="strip-unit">backends</span>
-                <span class="strip-label">From one source</span>
             </div>
         </div>
     </section>
@@ -135,7 +141,7 @@
     <!-- Performance -->
     <section class="perf-section">
         <h2 class="section-title">Performance</h2>
-        <p class="section-sub">Measured on Zen 4 (8 cores pinned) and RTX 4090. Best of 20 iterations.</p>
+        <p class="section-sub">Measured on Zen 4 (8 cores pinned) and RTX 4090. Qwen numbers use SDK-built kernels and Q4_K_M GGUF weights.</p>
 
         <div class="perf-grid">
             <div class="perf-card">
@@ -165,6 +171,22 @@
                         <span class="perf-kernel">Stories110M</span>
                         <span class="perf-val">1200 tok/s</span>
                     </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Qwen 3.5 9B prefill (256p)</span>
+                        <span class="perf-val">1688 tok/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Qwen 3.5 9B decode (16t)</span>
+                        <span class="perf-val">98.7 tok/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Qwen 3.6 27B prefill (2048p)</span>
+                        <span class="perf-val">495 tok/s</span>
+                    </div>
+                    <div class="perf-row">
+                        <span class="perf-kernel">Qwen 3.6 27B decode (16t)</span>
+                        <span class="perf-val">18.2 tok/s</span>
+                    </div>
                 </div>
             </div>
 
@@ -180,7 +202,7 @@
                         <span class="perf-val">120+ tok/s</span>
                     </div>
                     <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.5 9B Q4K</span>
+                        <span class="perf-kernel">Qwen 3.5 9B Q4K CPU</span>
                         <span class="perf-val">8 tok/s</span>
                     </div>
                     <div class="perf-row">
@@ -201,6 +223,7 @@
                 </div>
             </div>
         </div>
+        <p class="perf-note">Prefill rates are reported with prompt shape: 9B uses 256 prompt tokens and chunk 256; 27B uses 2048 prompt tokens, chunk 2048, and max_seq 4096. Decode rows use 16 generated tokens.</p>
     </section>
 
     <!-- Performance Charts -->
