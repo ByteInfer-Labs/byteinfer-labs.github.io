@@ -267,8 +267,32 @@ function animateNumbers() {
     numberEls.forEach(el => observer.observe(el));
 }
 
-// Access form submission (Formspree)
+// Access modal
+function openAccessModal() {
+    document.getElementById('access-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAccessModal() {
+    document.getElementById('access-modal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
 function initAccessForm() {
+    const modal = document.getElementById('access-modal');
+    if (!modal) return;
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeAccessModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') closeAccessModal();
+    });
+
+    // Form submission
     const form = document.getElementById('access-form');
     const success = document.getElementById('access-success');
     if (!form) return;
@@ -276,7 +300,6 @@ function initAccessForm() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = form.querySelector('.access-btn');
-        const origText = btn.textContent;
         btn.textContent = 'Sending...';
         btn.disabled = true;
 
