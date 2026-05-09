@@ -35,7 +35,24 @@
             <p class="blaze-hero-sub">A DSL compiler for high-performance ML kernels.</p>
             <p class="blaze-hero-desc">Write plain scalar loops — no intrinsics, no CUDA, no shader code.<br>The compiler turns them into hardware-optimized kernels across every backend.</p>
             <div class="blaze-hero-actions">
-                <span class="cta-btn cta-btn-dim">Coming Soon</span>
+                <form id="access-form" class="access-form" action="https://formspree.io/f/xeenpjgl" method="POST">
+                    <input type="hidden" name="_subject" value="Blaze SDK Early Access Request">
+                    <input type="hidden" name="source" value="blaze-landing">
+                    <div class="access-form-fields">
+                        <div class="access-form-row">
+                            <input type="text" name="name" placeholder="Name" required class="access-input access-input-half" autocomplete="name">
+                            <input type="text" name="company" placeholder="Company / Org" class="access-input access-input-half" autocomplete="organization">
+                        </div>
+                        <div class="access-form-row">
+                            <input type="email" name="email" placeholder="you@company.com" required class="access-input" autocomplete="email">
+                            <button type="submit" class="cta-btn access-btn">Request Early Access</button>
+                        </div>
+                    </div>
+                    <p class="access-note">Alpha builds shipping to early partners.</p>
+                </form>
+                <div id="access-success" class="access-success" style="display:none;">
+                    <span class="access-check">&#10003;</span> You're on the list. We'll be in touch.
+                </div>
             </div>
         </div>
     </section>
@@ -318,7 +335,7 @@
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-status">Blaze SDK Alpha — Coming Soon</div>
+            <div class="footer-status">Blaze SDK Alpha — <a href="#access-form" class="footer-access-link">Request Access</a></div>
             <div class="footer-links">
                 <a href="index.html">ByteInfer</a>
                 <span class="footer-dot">·</span>

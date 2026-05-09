@@ -267,12 +267,46 @@ function animateNumbers() {
     numberEls.forEach(el => observer.observe(el));
 }
 
+// Access form submission (Formspree)
+function initAccessForm() {
+    const form = document.getElementById('access-form');
+    const success = document.getElementById('access-success');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('.access-btn');
+        const origText = btn.textContent;
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+
+        try {
+            const resp = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            if (resp.ok) {
+                form.style.display = 'none';
+                success.style.display = 'flex';
+            } else {
+                btn.textContent = 'Try again';
+                btn.disabled = false;
+            }
+        } catch {
+            btn.textContent = 'Try again';
+            btn.disabled = false;
+        }
+    });
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new GraphCanvas();
     new NeuralBackground();
     initScrollAnimations();
     animateNumbers();
+    initAccessForm();
 });
 
 console.log('%c🔥 ByteInfer Labs', 'color: #ff6b35; font-size: 24px; font-weight: bold;');

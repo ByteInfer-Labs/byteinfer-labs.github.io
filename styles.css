@@ -488,6 +488,124 @@ body {
     justify-content: center;
 }
 
+/* ═══════════ BLAZE PAGE — ACCESS FORM ═══════════ */
+.access-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.access-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.access-form-row {
+    display: flex;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+}
+
+.access-form-row:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.15);
+}
+
+.access-input {
+    padding: 12px 18px;
+    background: var(--bg-card);
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    width: 280px;
+    outline: none;
+}
+
+.access-input-half {
+    width: 180px;
+}
+
+.access-input-half + .access-input-half {
+    border-left: 1px solid var(--border);
+}
+
+.access-input::placeholder {
+    color: var(--text-dim);
+}
+
+.access-btn {
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+}
+
+.access-btn:hover {
+    background: #ff8c5a;
+}
+
+.access-note {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+.access-success {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4ade80;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 24px;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 8px;
+    background: rgba(74, 222, 128, 0.05);
+}
+
+.access-check {
+    font-size: 1.2rem;
+}
+
+.footer-access-link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+    transition: border-color 0.2s;
+}
+
+.footer-access-link:hover {
+    border-bottom-color: var(--accent);
+}
+
+@media (max-width: 600px) {
+    .access-form-row {
+        flex-direction: column;
+        border-radius: 8px;
+    }
+    .access-input {
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+    }
+    .access-input-half {
+        width: 100%;
+    }
+    .access-input-half + .access-input-half {
+        border-left: none;
+        border-top: 1px solid var(--border);
+    }
+    .access-btn {
+        border-radius: 0 0 8px 8px;
+    }
+}
+
 /* ═══════════ BLAZE PAGE — NUMBERS STRIP ═══════════ */
 .numbers-strip {
     border-top: 1px solid var(--border);
