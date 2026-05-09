@@ -34,9 +34,6 @@
             </div>
             <p class="blaze-hero-sub">A DSL compiler for high-performance ML kernels.</p>
             <p class="blaze-hero-desc">Write plain scalar loops — no intrinsics, no CUDA, no shader code.<br>The compiler turns them into hardware-optimized kernels across every backend.</p>
-            <div class="blaze-hero-actions">
-                <button class="cta-btn" onclick="openAccessModal()">Request Early Access</button>
-            </div>
         </div>
     </section>
 
@@ -79,6 +76,12 @@
                 <span class="strip-label">Schedule speedup</span>
             </div>
         </div>
+    </section>
+
+    <!-- CTA after numbers -->
+    <section class="cta-strip">
+        <p class="cta-strip-text">If these numbers match the workloads you care about, we'd like to hear from you.</p>
+        <button class="cta-btn" onclick="openAccessModal()">Request Early Access</button>
     </section>
 
     <!-- How It Works -->
@@ -327,6 +330,7 @@
                 <input type="text" name="name" placeholder="Name" required class="access-input" autocomplete="name">
                 <input type="text" name="company" placeholder="Company / Org" class="access-input" autocomplete="organization">
                 <input type="email" name="email" placeholder="you@company.com" required class="access-input" autocomplete="email">
+                <textarea name="usecase" placeholder="What are you building? (optional)" class="access-input access-textarea" rows="3"></textarea>
                 <button type="submit" class="cta-btn access-btn">Submit</button>
             </form>
             <div id="access-success" class="access-success" style="display:none;">

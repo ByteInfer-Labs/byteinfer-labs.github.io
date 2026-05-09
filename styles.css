@@ -488,6 +488,20 @@ body {
     justify-content: center;
 }
 
+/* ═══════════ BLAZE PAGE — CTA STRIP ═══════════ */
+.cta-strip {
+    text-align: center;
+    padding: 40px 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.cta-strip-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+    line-height: 1.5;
+}
+
 /* ═══════════ BLAZE PAGE — ACCESS MODAL ═══════════ */
 .modal-overlay {
     position: fixed;
@@ -574,6 +588,13 @@ body {
 
 .access-input::placeholder {
     color: var(--text-dim);
+}
+
+.access-textarea {
+    resize: vertical;
+    min-height: 60px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
 }
 
 .access-btn {
