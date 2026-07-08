@@ -152,7 +152,10 @@
                     <li>The representability gate and its invariants, explained end to end</li>
                     <li>Agentic authoring and adversarial-testing results on real models</li>
                 </ul>
-                <span class="cta-soon">Whitepaper coming soon</span>
+                <div class="teaser-cta-row">
+                    <span class="cta-soon">Full whitepaper coming soon</span>
+                    <button class="cta-btn" onclick="openAccessModal()">Request early access <span class="arrow">→</span></button>
+                </div>
             </div>
             <div class="wp-teaser-visual">
                 <div class="wp-page">
@@ -180,10 +183,31 @@
         </div>
     </section>
 
+    <!-- Early-access modal -->
+    <div id="access-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAccessModal()">&times;</button>
+            <h2 class="modal-title">Request early access</h2>
+            <p class="modal-sub">We&rsquo;ll let you know the moment the Rune whitepaper is out.</p>
+            <form id="access-form" class="access-form" action="https://formspree.io/f/xeenpjgl" method="POST">
+                <input type="hidden" name="_subject" value="Rune Whitepaper — Early Access Request">
+                <input type="hidden" name="source" value="rune-landing">
+                <input type="text" name="name" placeholder="Name" required class="access-input" autocomplete="name">
+                <input type="text" name="company" placeholder="Company / Org" class="access-input" autocomplete="organization">
+                <input type="email" name="email" placeholder="you@company.com" required class="access-input" autocomplete="email">
+                <textarea name="usecase" placeholder="What are you working on? (optional)" class="access-input access-textarea" rows="3"></textarea>
+                <button type="submit" class="cta-btn access-btn">Request access</button>
+            </form>
+            <div id="access-success" class="access-success" style="display:none;">
+                <span class="access-check">&#10003;</span> Thanks — we&rsquo;ll be in touch when it&rsquo;s ready.
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-status">Rune — technical whitepaper coming soon</div>
+            <div class="footer-status">Rune — full whitepaper coming soon · <a class="footer-access-link" onclick="openAccessModal()">request early access</a></div>
             <div class="footer-links">
                 <a href="index.html">ByteInfer</a>
                 <span class="footer-dot">·</span>
