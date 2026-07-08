@@ -1,5 +1,34 @@
 // ByteInfer.ai — Animations & Interactions
 
+// Theme-aware network colors (rgb triples from CSS vars, cached; refreshed on toggle)
+const NET = { line: '150,88,42', dot: '180,83,26' };
+function readNet() {
+    const s = getComputedStyle(document.documentElement);
+    const l = (s.getPropertyValue('--net-line') || '').trim();
+    const d = (s.getPropertyValue('--net-dot') || '').trim();
+    if (l) NET.line = l;
+    if (d) NET.dot = d;
+}
+window.__syncNet = readNet;
+
+// Theme toggle (persisted; mirrors the Rune whitepaper)
+function initThemeToggle() {
+    const root = document.documentElement;
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    const lbl = btn.querySelector('.tlbl');
+    function apply(t) {
+        if (t === 'dark') { root.setAttribute('data-theme', 'dark'); if (lbl) lbl.textContent = 'Light'; }
+        else { root.removeAttribute('data-theme'); if (lbl) lbl.textContent = 'Dark'; }
+        try { localStorage.setItem('byteinfer-theme', t); } catch (e) {}
+        readNet();
+    }
+    let saved = 'light';
+    try { saved = localStorage.getItem('byteinfer-theme') || 'light'; } catch (e) {}
+    apply(saved);
+    btn.addEventListener('click', () => apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+}
+
 // Particle graph background
 class GraphCanvas {
     constructor() {
@@ -83,7 +112,7 @@ class GraphCanvas {
                     this.ctx.beginPath();
                     this.ctx.moveTo(this.nodes[i].x, this.nodes[i].y);
                     this.ctx.lineTo(this.nodes[j].x, this.nodes[j].y);
-                    this.ctx.strokeStyle = `rgba(255, 107, 53, ${opacity})`;
+                    this.ctx.strokeStyle = `rgba(${NET.line}, ${opacity})`;
                     this.ctx.lineWidth = 1;
                     this.ctx.stroke();
                 }
@@ -92,7 +121,7 @@ class GraphCanvas {
         for (const node of this.nodes) {
             this.ctx.beginPath();
             this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 107, 53, ${node.opacity})`;
+            this.ctx.fillStyle = `rgba(${NET.dot}, ${node.opacity})`;
             this.ctx.fill();
         }
     }
@@ -178,7 +207,7 @@ class NeuralBackground {
             this.ctx.beginPath();
             this.ctx.moveTo(from.x, from.y);
             this.ctx.lineTo(to.x, to.y);
-            this.ctx.strokeStyle = `rgba(255, 107, 53, ${0.08 + glow})`;
+            this.ctx.strokeStyle = `rgba(${NET.line}, ${0.08 + glow})`;
             this.ctx.lineWidth = 1 + glow * 2;
             this.ctx.stroke();
         }
@@ -187,7 +216,7 @@ class NeuralBackground {
             const activation = Math.sin(phase * Math.PI) * 0.3;
             this.ctx.beginPath();
             this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 107, 53, ${0.2 + activation})`;
+            this.ctx.fillStyle = `rgba(${NET.dot}, ${0.2 + activation})`;
             this.ctx.fill();
         }
     }
@@ -325,6 +354,8 @@ function initAccessForm() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
+    readNet();
     new GraphCanvas();
     new NeuralBackground();
     initScrollAnimations();

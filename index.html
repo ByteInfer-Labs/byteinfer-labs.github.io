@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ByteInfer Labs — Fast ML Inference, Built from First Principles</title>
-    <meta name="description" content="ByteInfer Labs — The infrastructure for fast ML inference, built from first principles.">
+    <meta name="description" content="ByteInfer Labs — the infrastructure for fast ML inference, built from first principles. Home of the Blaze kernel compiler and the Rune graph-rewrite DSL.">
+    <script>try{if((localStorage.getItem('byteinfer-theme')||'light')==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button id="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle light / dark">
+        <svg class="ic-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        <svg class="ic-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+        <span class="tlbl">Dark</span>
+    </button>
+
     <div class="noise-overlay"></div>
     <canvas id="graph-canvas"></canvas>
     <canvas id="neural-canvas"></canvas>
@@ -20,54 +27,55 @@
         <div class="hero-content">
             <div class="logo-container">
                 <img src="flame-transparent.png" alt="" class="flame">
-                <div class="flame-glow"></div>
             </div>
-
             <h2 class="brand-name">ByteInfer Labs</h2>
-
-            <h1 class="tagline">
-                Inference has a new language<span class="cursor">_</span>
-            </h1>
-
+            <h1 class="tagline">Inference has a new language<span class="cursor">_</span></h1>
             <p class="subtitle">The infrastructure for fast ML inference — built from first principles.</p>
         </div>
     </section>
 
-    <!-- Product Card -->
+    <!-- Products -->
     <section class="product-section">
-        <div class="product-card">
-            <div class="product-card-inner">
-                <div class="product-info">
+        <div class="product-grid">
+            <!-- Blaze -->
+            <div class="product-card">
+                <div class="product-card-inner">
                     <div class="product-header">
                         <img src="flame-transparent.png" alt="" class="product-flame">
                         <div>
+                            <div class="product-eyebrow">Kernel compiler</div>
                             <h3 class="product-name">Blaze <span class="product-badge">SDK</span></h3>
-                            <p class="product-desc">Write scalar loops. Get optimized kernels for x86, ARM, CUDA, and Metal.</p>
                         </div>
                     </div>
-                    <a href="blaze.html" class="cta-btn">Learn more <span class="arrow">→</span></a>
+                    <p class="product-desc">Write plain scalar loops. Get hardware-optimized kernels for x86, ARM, CUDA, and Metal — the schedule is the only thing that changes.</p>
+                    <div class="product-numbers">
+                        <div class="number-item"><span class="number-value">127.6</span><span class="number-unit">TFLOPS</span><span class="number-label">BF16 matmul · RTX 4090</span></div>
+                        <div class="number-item"><span class="number-value">1688</span><span class="number-unit">tok/s</span><span class="number-label">Qwen 9B prefill</span></div>
+                        <div class="number-item"><span class="number-value">2565</span><span class="number-unit">GB/s</span><span class="number-label">INT8 matvec · 138% cuBLASLt</span></div>
+                        <div class="number-item"><span class="number-value">1300×</span><span class="number-unit"></span><span class="number-label">Same source, different schedule</span></div>
+                    </div>
+                    <a href="blaze.html" class="cta-btn">Explore Blaze <span class="arrow">→</span></a>
                 </div>
-                <div class="product-numbers">
-                    <div class="number-item">
-                        <span class="number-value">127.6</span>
-                        <span class="number-unit">TFLOPS</span>
-                        <span class="number-label">BF16 Matmul · RTX 4090</span>
+            </div>
+
+            <!-- Rune -->
+            <div class="product-card">
+                <div class="product-card-inner">
+                    <div class="product-header">
+                        <img src="flame-transparent.png" alt="" class="product-flame">
+                        <div>
+                            <div class="product-eyebrow">Graph-rewrite DSL</div>
+                            <h3 class="product-name">Rune <span class="product-badge">DSL</span></h3>
+                        </div>
                     </div>
-                    <div class="number-item">
-                        <span class="number-value">1688</span>
-                        <span class="number-unit">tok/s</span>
-                        <span class="number-label">Qwen 3.5 9B prefill · RTX 4090</span>
+                    <p class="product-desc">Graph surgery for ONNX models. Pattern-match, rewrite, and fuse — with every edit checked against a representability gate before it touches the graph.</p>
+                    <div class="product-numbers">
+                        <div class="number-item"><span class="number-value">2.67×</span><span class="number-unit"></span><span class="number-label">Faster decode · prefill/decode split</span></div>
+                        <div class="number-item"><span class="number-value">5.07</span><span class="number-unit">%</span><span class="number-label">BERT speedup vs ORT ENABLE_ALL</span></div>
+                        <div class="number-item"><span class="number-value">56</span><span class="number-unit">/ 56</span><span class="number-label">Sites, first-attempt agent authoring</span></div>
+                        <div class="number-item"><span class="number-value">0</span><span class="number-unit">unsafe</span><span class="number-label">Invalid graphs pass the gate</span></div>
                     </div>
-                    <div class="number-item">
-                        <span class="number-value">98.7</span>
-                        <span class="number-unit">tok/s</span>
-                        <span class="number-label">Qwen 3.5 9B decode · Q4K GGUF</span>
-                    </div>
-                    <div class="number-item">
-                        <span class="number-value">1300×</span>
-                        <span class="number-unit"></span>
-                        <span class="number-label">Same source, different schedule</span>
-                    </div>
+                    <a href="rune.html" class="cta-btn">Explore Rune <span class="arrow">→</span></a>
                 </div>
             </div>
         </div>
@@ -84,6 +92,8 @@
             <div class="footer-status">Blaze SDK Alpha — Coming Soon</div>
             <div class="footer-links">
                 <a href="blaze.html">Blaze</a>
+                <span class="footer-dot">·</span>
+                <a href="rune.html">Rune</a>
                 <span class="footer-dot">·</span>
                 <a href="mailto:hello@byteinfer.ai">Contact</a>
             </div>
