@@ -156,6 +156,9 @@ code{font-family:var(--mono)}
 .cta-btn:hover .arrow{transform:translateX(3px)}
 .cta-ghost{color:var(--accent);background:transparent}
 .cta-ghost:hover{color:var(--accent-2);background:var(--inline-code)}
+.cta-soon{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:14px;
+  color:var(--ink-3);background:transparent;border:1px dashed var(--hair-2);border-radius:999px;padding:11px 20px}
+.cta-soon::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.85}
 
 /* ═══════════════════ PHILOSOPHY ═══════════════════ */
 .philosophy{text-align:center;padding:6vh 2rem;position:relative;z-index:1}
