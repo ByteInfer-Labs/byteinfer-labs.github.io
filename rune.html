@@ -62,12 +62,6 @@
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-strip">
-        <p class="cta-strip-text">The full technical whitepaper walks every case study with interactive, clickable graph rewrites.</p>
-        <a href="rune-whitepaper.html" class="cta-btn">Read the whitepaper <span class="arrow">→</span></a>
-    </section>
-
     <!-- How it works -->
     <section class="how-section">
         <h2 class="section-title">How it works</h2>
@@ -243,10 +237,71 @@
         </div>
     </section>
 
+    <!-- Whitepaper teaser -->
+    <section class="wp-teaser-section">
+        <div class="wp-teaser">
+            <div class="wp-teaser-body">
+                <div class="wp-teaser-eyebrow">Technical whitepaper</div>
+                <h2>Graph surgery, in depth</h2>
+                <p>A practitioner&rsquo;s walkthrough of the language, the validity gate, and every case study — with interactive graph rewrites you can drive yourself.</p>
+                <ul class="wp-teaser-list">
+                    <li>Six worked case studies, from LoRA adapters to the prefill/decode split</li>
+                    <li>The representability gate and its invariants, explained end to end</li>
+                    <li>Agentic authoring and adversarial-testing results on real models</li>
+                </ul>
+                <button class="cta-btn" onclick="openAccessModal()">Request the whitepaper <span class="arrow">→</span></button>
+            </div>
+            <div class="wp-teaser-visual">
+                <div class="wp-page">
+                    <div class="wp-page-brand"><img src="flame-transparent.png" alt=""> Rune — Technical Whitepaper</div>
+                    <div class="wp-page-h">A rewrite is a plan, checked before it runs</div>
+                    <p class="wp-page-p">The gate answers one question per site: if this plan runs, is the result still a complete graph? Five invariants define <em>complete</em>, and a rewrite that would break one is refused where it stands — the invariant, node, and port named.</p>
+                    <div class="gscroll">
+                        <svg viewBox="0 0 366 52" width="366" height="52" role="img" aria-label="input into a single LayerNormalization into output">
+                            <path class="e-new" d="M66 26 L122 26" marker-end="url(#tnew)"></path>
+                            <path class="e-new" d="M260 26 L302 26" marker-end="url(#tnew)"></path>
+                            <rect class="node-port" x="6" y="15" width="60" height="22" rx="9"></rect>
+                            <text class="t-port" x="36" y="30" text-anchor="middle">input</text>
+                            <rect class="node-new" x="122" y="8" width="138" height="36" rx="6"></rect>
+                            <text class="op t-new" x="191" y="24" text-anchor="middle">LayerNormalization</text>
+                            <text class="nm" x="191" y="37" text-anchor="middle">&#949; = 1e-12</text>
+                            <rect class="node-port" x="302" y="15" width="58" height="22" rx="9"></rect>
+                            <text class="t-port" x="331" y="30" text-anchor="middle">out</text>
+                            <defs><marker id="tnew" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"></path></marker></defs>
+                        </svg>
+                    </div>
+                    <p class="wp-page-p">Because the gate simulates the plan on a shadow copy of the graph before any node is written, a bad rewrite costs nothing — it returns as a refusal naming the invariant it would have broken, not as a model that loads and then produces wrong numbers three transforms downstream. That is what makes rule authoring safe to hand to an agent…</p>
+                </div>
+                <div class="wp-page-fade"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Request whitepaper modal -->
+    <div id="access-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAccessModal()">&times;</button>
+            <h2 class="modal-title">Request the whitepaper</h2>
+            <p class="modal-sub">We&rsquo;ll send you the full Rune technical whitepaper.</p>
+            <form id="access-form" class="access-form" action="https://formspree.io/f/xeenpjgl" method="POST">
+                <input type="hidden" name="_subject" value="Rune Whitepaper Request">
+                <input type="hidden" name="source" value="rune-landing">
+                <input type="text" name="name" placeholder="Name" required class="access-input" autocomplete="name">
+                <input type="text" name="company" placeholder="Company / Org" class="access-input" autocomplete="organization">
+                <input type="email" name="email" placeholder="you@company.com" required class="access-input" autocomplete="email">
+                <textarea name="usecase" placeholder="What are you working on? (optional)" class="access-input access-textarea" rows="3"></textarea>
+                <button type="submit" class="cta-btn access-btn">Send request</button>
+            </form>
+            <div id="access-success" class="access-success" style="display:none;">
+                <span class="access-check">&#10003;</span> Thanks — we&rsquo;ll be in touch with the paper.
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-status">Rune — read the <a class="footer-access-link" href="rune-whitepaper.html">technical whitepaper</a></div>
+            <div class="footer-status">Rune — <a class="footer-access-link" onclick="openAccessModal()">request the technical whitepaper</a></div>
             <div class="footer-links">
                 <a href="index.html">ByteInfer</a>
                 <span class="footer-dot">·</span>

@@ -327,6 +327,30 @@ svg .e-del{stroke:var(--del);stroke-width:1.4;stroke-dasharray:5 3;fill:none}
 .inv-row b{font-family:var(--mono);font-size:11px;font-weight:700;color:#FBF5E6;background:var(--del);
   border-radius:5px;padding:2px 7px;flex:none}
 
+/* ═══════════════════ WHITEPAPER TEASER (rune) ═══════════════════ */
+.wp-teaser-section{max-width:1080px;margin:0 auto;padding:7vh 2rem 2vh;position:relative;z-index:1}
+.wp-teaser{background:var(--card);border:1px solid var(--hair-2);border-radius:18px;box-shadow:var(--card-shadow);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);overflow:hidden}
+@media(max-width:860px){.wp-teaser{grid-template-columns:1fr}}
+.wp-teaser-body{padding:34px 36px}
+.wp-teaser-eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.wp-teaser-body h2{font-family:var(--sans);font-weight:700;font-size:clamp(23px,3vw,30px);color:var(--ink);
+  text-align:left;line-height:1.1;margin-bottom:12px}
+.wp-teaser-body > p{font-size:15.5px;color:var(--ink-2);line-height:1.6;margin-bottom:18px;max-width:52ch}
+.wp-teaser-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:26px}
+.wp-teaser-list li{position:relative;padding-left:22px;font-size:14px;color:var(--ink-2);line-height:1.5}
+.wp-teaser-list li::before{content:"\2192";position:absolute;left:0;color:var(--accent);font-weight:600}
+.wp-teaser-visual{position:relative;background:var(--bg);border-left:1px solid var(--hair);padding:26px 26px 0;overflow:hidden;min-height:280px}
+@media(max-width:860px){.wp-teaser-visual{border-left:none;border-top:1px solid var(--hair);min-height:230px}}
+.wp-page-brand{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:11.5px;
+  letter-spacing:.02em;color:var(--ink-2);margin-bottom:16px}
+.wp-page-brand img{width:14px;height:auto;filter:drop-shadow(0 0 5px var(--flame-glow))}
+.wp-page-h{font-family:var(--sans);font-weight:700;font-size:17px;color:var(--ink);line-height:1.25;margin-bottom:10px}
+.wp-page-p{font-size:12.5px;color:var(--ink-3);line-height:1.62;margin-bottom:16px}
+.wp-page-fade{position:absolute;left:0;right:0;bottom:0;height:96px;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,var(--bg))}
+
 /* ═══════════════════ MODAL ═══════════════════ */
 .modal-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
   padding:2rem;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}
