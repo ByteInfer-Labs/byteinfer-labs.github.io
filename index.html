@@ -48,12 +48,12 @@
                         </div>
                     </div>
                     <p class="product-desc">Write plain scalar loops. Get hardware-optimized kernels for x86, ARM, CUDA, and Metal — the schedule is the only thing that changes.</p>
-                    <div class="product-numbers">
-                        <div class="number-item"><span class="number-value">127.6</span><span class="number-unit">TFLOPS</span><span class="number-label">BF16 matmul · RTX 4090</span></div>
-                        <div class="number-item"><span class="number-value">1688</span><span class="number-unit">tok/s</span><span class="number-label">Qwen 9B prefill</span></div>
-                        <div class="number-item"><span class="number-value">2565</span><span class="number-unit">GB/s</span><span class="number-label">INT8 matvec · 138% cuBLASLt</span></div>
-                        <div class="number-item"><span class="number-value">1300×</span><span class="number-unit"></span><span class="number-label">Same source, different schedule</span></div>
-                    </div>
+                    <ul class="product-points">
+                        <li>Near hardware-peak matmul, attention, and matvec</li>
+                        <li>One kernel source, every backend</li>
+                        <li>Tuned by schedule, not rewritten by hand</li>
+                        <li>Schedule wins measured in orders of magnitude</li>
+                    </ul>
                     <a href="blaze.html" class="cta-btn">Explore Blaze <span class="arrow">→</span></a>
                 </div>
             </div>
@@ -69,12 +69,12 @@
                         </div>
                     </div>
                     <p class="product-desc">Graph surgery for ONNX models. Pattern-match, rewrite, and fuse — with every edit checked against a representability gate before it touches the graph.</p>
-                    <div class="product-numbers">
-                        <div class="number-item"><span class="number-value">2.67×</span><span class="number-unit"></span><span class="number-label">Faster decode · prefill/decode split</span></div>
-                        <div class="number-item"><span class="number-value">5.07</span><span class="number-unit">%</span><span class="number-label">BERT speedup vs ORT ENABLE_ALL</span></div>
-                        <div class="number-item"><span class="number-value">56</span><span class="number-unit">/ 56</span><span class="number-label">Sites, first-attempt agent authoring</span></div>
-                        <div class="number-item"><span class="number-value">0</span><span class="number-unit">unsafe</span><span class="number-label">Invalid graphs pass the gate</span></div>
-                    </div>
+                    <ul class="product-points">
+                        <li>Pattern-match and rewrite ONNX graphs</li>
+                        <li>Fusion, LoRA, and quantization prep</li>
+                        <li>Every edit checked by a validity gate</li>
+                        <li>Bit-identical outputs, or measured speedups</li>
+                    </ul>
                     <a href="rune.html" class="cta-btn">Explore Rune <span class="arrow">→</span></a>
                 </div>
             </div>

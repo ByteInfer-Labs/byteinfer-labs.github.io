@@ -47,48 +47,42 @@
 
     <!-- Numbers Strip -->
     <section class="numbers-strip">
-        <div class="numbers-strip-inner">
+        <div class="numbers-strip-inner qual">
             <div class="strip-number">
-                <span class="strip-value">127.6</span>
-                <span class="strip-unit">TFLOPS</span>
-                <span class="strip-label">BF16 Matmul</span>
+                <span class="strip-value">Near-peak</span>
+                <span class="strip-label">BF16 matmul &amp; attention</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">1688</span>
-                <span class="strip-unit">tok/s</span>
-                <span class="strip-label">9B prefill</span>
+                <span class="strip-value">Beats cuBLASLt</span>
+                <span class="strip-label">INT8 matvec</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">98.7</span>
-                <span class="strip-unit">tok/s</span>
-                <span class="strip-label">9B decode</span>
+                <span class="strip-value">High throughput</span>
+                <span class="strip-label">LLM prefill &amp; decode</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">495</span>
-                <span class="strip-unit">tok/s</span>
-                <span class="strip-label">27B prefill</span>
+                <span class="strip-value">Five backends</span>
+                <span class="strip-label">x86 · ARM · CUDA · Metal · ANE</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">2565</span>
-                <span class="strip-unit">GB/s</span>
-                <span class="strip-label">INT8 Matvec · 138% cuBLASLt</span>
+                <span class="strip-value">One source</span>
+                <span class="strip-label">kernel, many schedules</span>
             </div>
             <div class="strip-sep"></div>
             <div class="strip-number">
-                <span class="strip-value">1300×</span>
-                <span class="strip-unit"></span>
-                <span class="strip-label">Schedule speedup</span>
+                <span class="strip-value">Orders of magnitude</span>
+                <span class="strip-label">schedule vs none</span>
             </div>
         </div>
     </section>
 
     <!-- CTA after numbers -->
     <section class="cta-strip">
-        <p class="cta-strip-text">If these numbers match the workloads you care about, we'd like to hear from you.</p>
+        <p class="cta-strip-text">If this is the kind of performance the workloads you care about need, we'd like to hear from you.</p>
         <button class="cta-btn" onclick="openAccessModal()">Request Early Access</button>
     </section>
 
@@ -143,7 +137,7 @@
     kernel.o -lblaze_runtime
 
 <span class="dim">  1024×1024 f32 matmul</span>
-<span class="accent">  1045 GFLOPS</span> <span class="dim">(99% peak)</span></code></pre>
+<span class="accent">  near hardware peak</span> <span class="dim">(from plain loops)</span></code></pre>
                 <p class="how-note">Same source. Any backend.</p>
             </div>
         </div>
@@ -152,101 +146,34 @@
     <!-- Performance -->
     <section class="perf-section">
         <h2 class="section-title">Performance</h2>
-        <p class="section-sub">Measured on Zen 4 (8 cores pinned) and RTX 4090. Qwen numbers use SDK-built kernels and Q4_K_M GGUF weights.</p>
+        <p class="section-sub">Kernels built from plain scalar loops, tuned only by their schedule. Exact figures move with the chip, driver, and model, so we describe the shape of the result — the measured detail for a specific target is available on request.</p>
 
-        <div class="perf-grid">
-            <div class="perf-card">
-                <h3>GPU <span class="perf-hw">RTX 4090</span></h3>
-                <div class="perf-rows">
-                    <div class="perf-row">
-                        <span class="perf-kernel">BF16 Matmul 4096²</span>
-                        <span class="perf-val">127.6 TFLOPS</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">TF32 Matmul 4096²</span>
-                        <span class="perf-val">43.1 TFLOPS</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">FlashAttention N=8192</span>
-                        <span class="perf-val">137 TFLOPS</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">BF16 Matvec 11008×4096</span>
-                        <span class="perf-val">836 GB/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">INT8 Matvec</span>
-                        <span class="perf-val">2565 GB/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Stories110M</span>
-                        <span class="perf-val">1200 tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.5 9B prefill (256p)</span>
-                        <span class="perf-val">1688 tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.5 9B decode (16t)</span>
-                        <span class="perf-val">98.7 tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.6 27B prefill (2048p)</span>
-                        <span class="perf-val">495 tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.6 27B decode (16t)</span>
-                        <span class="perf-val">18.2 tok/s</span>
-                    </div>
+        <div class="cap-grid">
+            <div class="cap-card">
+                <h3>GPU <span class="perf-hw">NVIDIA, Ada-class</span></h3>
+                <div class="cap-rows">
+                    <div class="cap-row"><span class="cap-kernel">BF16 / TF32 matmul</span><span class="cap-val">near hardware peak</span></div>
+                    <div class="cap-row"><span class="cap-kernel">FlashAttention</span><span class="cap-val">near hardware peak</span></div>
+                    <div class="cap-row"><span class="cap-kernel">INT8 matvec</span><span class="cap-val">beats cuBLASLt</span></div>
+                    <div class="cap-row"><span class="cap-kernel">BF16 matvec</span><span class="cap-val">bandwidth-bound</span></div>
+                    <div class="cap-row"><span class="cap-kernel">LLM prefill &amp; decode</span><span class="cap-val">high throughput</span></div>
                 </div>
             </div>
-
-            <div class="perf-card">
-                <h3>CPU <span class="perf-hw">Zen 4, 8 cores</span></h3>
-                <div class="perf-rows">
-                    <div class="perf-row">
-                        <span class="perf-kernel">F32 Matmul 1024²</span>
-                        <span class="perf-val">1045 GFLOPS</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Stories110M</span>
-                        <span class="perf-val">120+ tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">Qwen 3.5 9B Q4K CPU</span>
-                        <span class="perf-val">8 tok/s</span>
-                    </div>
-                    <div class="perf-row">
-                        <span class="perf-kernel">LLaMA 3.2 3B Q4K+INT8</span>
-                        <span class="perf-val">22.6 tok/s</span>
-                    </div>
+            <div class="cap-card">
+                <h3>CPU <span class="perf-hw">x86 · Apple Silicon</span></h3>
+                <div class="cap-rows">
+                    <div class="cap-row"><span class="cap-kernel">F32 matmul</span><span class="cap-val">near hardware peak</span></div>
+                    <div class="cap-row"><span class="cap-kernel">Small-model inference</span><span class="cap-val">interactive rates</span></div>
+                    <div class="cap-row"><span class="cap-kernel">Quantized LLM decode</span><span class="cap-val">usable on laptops</span></div>
                 </div>
                 <div class="perf-callout">
                     <div class="perf-callout-label">Same kernel, only the schedule changes</div>
-                    <div class="perf-callout-row">
-                        <span class="dim">No schedule</span>
-                        <span class="dim">0.8 GFLOPS</span>
-                    </div>
-                    <div class="perf-callout-row">
-                        <span class="accent">+ microkernel</span>
-                        <span class="accent">1045 GFLOPS (1300×)</span>
-                    </div>
+                    <div class="perf-callout-row"><span class="dim">No schedule</span><span class="dim">baseline</span></div>
+                    <div class="perf-callout-row"><span class="accent">+ microkernel</span><span class="accent">orders of magnitude faster</span></div>
                 </div>
             </div>
         </div>
-        <p class="perf-note">Prefill rates are reported with prompt shape: 9B uses 256 prompt tokens and chunk 256; 27B uses 2048 prompt tokens, chunk 2048, and max_seq 4096. Decode rows use 16 generated tokens.</p>
-    </section>
-
-    <!-- Performance Charts -->
-    <section class="charts-section">
-        <div class="charts-grid">
-            <div class="chart-card">
-                <img src="assets/tuning-stages-perf.svg" alt="Progressive schedule tuning — 0.8 to 1045 GFLOPS" class="chart-img">
-            </div>
-            <div class="chart-card">
-                <img src="assets/schedule-scaling.svg" alt="Schedule impact across matrix sizes" class="chart-img">
-            </div>
-        </div>
+        <p class="perf-note">The point is the direction, not a leaderboard number that changes with the next driver. If you want the measured detail for your hardware and models, ask — we are glad to share it.</p>
     </section>
 
     <!-- Backends -->
@@ -319,7 +246,7 @@
   maxnreg 160
 }
 
-<span class="cm">// 127.6 TFLOPS at 4096×4096</span>
+<span class="cm">// near-peak BF16 on Ada</span>
 <span class="cm">// m16n8k16 BF16 MMA</span>
 <span class="cm">// cp.async + ldmatrix.trans</span></code></pre>
             </div>

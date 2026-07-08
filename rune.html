@@ -47,18 +47,18 @@
 
     <!-- Numbers -->
     <section class="numbers-strip">
-        <div class="numbers-strip-inner">
-            <div class="strip-number"><span class="strip-value">2.67×</span><span class="strip-unit"></span><span class="strip-label">Faster decode</span></div>
+        <div class="numbers-strip-inner qual">
+            <div class="strip-number"><span class="strip-value">Faster decode</span><span class="strip-label">SmolLM-135M prefill / decode split</span></div>
             <div class="strip-sep"></div>
-            <div class="strip-number"><span class="strip-value">5.07</span><span class="strip-unit">%</span><span class="strip-label">BERT vs ORT ENABLE_ALL</span></div>
+            <div class="strip-number"><span class="strip-value">Leaner graphs</span><span class="strip-label">fusion vs ORT ENABLE_ALL</span></div>
             <div class="strip-sep"></div>
-            <div class="strip-number"><span class="strip-value">9.78</span><span class="strip-unit">%</span><span class="strip-label">SmolLM GQA fusion</span></div>
+            <div class="strip-number"><span class="strip-value">Fused attention</span><span class="strip-label">SmolLM block → one GQA node</span></div>
             <div class="strip-sep"></div>
-            <div class="strip-number"><span class="strip-value">56</span><span class="strip-unit">/ 56</span><span class="strip-label">First-attempt agent sites</span></div>
+            <div class="strip-number"><span class="strip-value">Agent-authored</span><span class="strip-label">correct on the first attempt</span></div>
             <div class="strip-sep"></div>
-            <div class="strip-number"><span class="strip-value">512</span><span class="strip-unit">/ 512</span><span class="strip-label">Greedy-identical tokens</span></div>
+            <div class="strip-number"><span class="strip-value">Exact outputs</span><span class="strip-label">match the fp32 baseline</span></div>
             <div class="strip-sep"></div>
-            <div class="strip-number"><span class="strip-value">0</span><span class="strip-unit">unsafe</span><span class="strip-label">Invalid graphs pass the gate</span></div>
+            <div class="strip-number"><span class="strip-value">Gate-checked</span><span class="strip-label">every rewrite, before it runs</span></div>
         </div>
     </section>
 
@@ -105,8 +105,8 @@
     --rules fold.rune \
     --report out.html
 
-<span class="dim">  56/56 sites · 0 refusals</span>
-<span class="accent">  261 → 205 nodes · outputs bit-identical</span></code></pre>
+<span class="dim">  every site · 0 refusals</span>
+<span class="accent">  leaner graph · outputs bit-identical</span></code></pre>
                 <p class="how-note">The gate checks every site; the report shows before/after.</p>
             </div>
         </div>
@@ -180,7 +180,7 @@
             </div>
             <div class="figtext">
                 <p>The pattern matches the thirteen-operator idiom and inserts a single <code>LayerNormalization</code>. Once its output feeds the downstream consumer, the primitive subtree is dead and pruned automatically.</p>
-                <p>On BERT-Squad this fusion, applied at 37 sites, runs <strong>+5.07%</strong> faster than ONNX Runtime at its most aggressive optimization level — and the outputs stay bit-identical to the original.</p>
+                <p>On <strong>BERT-Squad</strong> this fusion, applied at every LayerNorm site, runs measurably faster than ONNX Runtime at its most aggressive optimization level — and the outputs stay bit-identical to the original.</p>
             </div>
         </div>
     </section>
@@ -191,28 +191,28 @@
         <p class="section-sub">Four transformations driven end to end by rules, each measured against the original model.</p>
         <div class="cases-grid">
             <div class="case-card">
-                <div class="case-tag">Fine-tuning</div>
+                <div class="case-tag">Fine-tuning · SmolLM-135M</div>
                 <h3>LoRA adapters</h3>
-                <p>Wrap a frozen projection with a low-rank adapter, train straight through the graph, then merge it back into a single matmul with no inference-time cost.</p>
-                <div class="case-metric"><span class="cm-val">15.9 → 13.6</span><span class="cm-lab">held-out perplexity</span></div>
+                <p>On an exported SmolLM-135M decoder, wrap a frozen projection with a low-rank adapter, train straight through the graph, then merge it back into a single matmul with no inference-time cost.</p>
+                <div class="case-metric"><span class="cm-val">Lower perplexity</span><span class="cm-lab">trained through the graph</span></div>
             </div>
             <div class="case-card">
-                <div class="case-tag">Fusion</div>
+                <div class="case-tag">Fusion · BERT-Squad</div>
                 <h3>LayerNorm fold</h3>
-                <p>Collapse the 13-operator TensorFlow LayerNorm idiom into a single operator the runtime can accelerate — no numerical change.</p>
-                <div class="case-metric"><span class="cm-val">+5.07%</span><span class="cm-lab">BERT vs ORT ENABLE_ALL</span></div>
+                <p>On BERT-Squad, collapse the 13-operator TensorFlow LayerNorm idiom into a single operator the runtime can accelerate — no numerical change.</p>
+                <div class="case-metric"><span class="cm-val">Faster than ORT</span><span class="cm-lab">at its ENABLE_ALL baseline</span></div>
             </div>
             <div class="case-card">
-                <div class="case-tag">Attention</div>
+                <div class="case-tag">Attention · SmolLM-135M</div>
                 <h3>Block → GQA</h3>
-                <p>Fuse a ~50-op attention block — rotary, KV-expand, scores, softmax — into one GroupQueryAttention kernel with staged projection splices.</p>
-                <div class="case-metric"><span class="cm-val">+9.78%</span><span class="cm-lab">SmolLM decode</span></div>
+                <p>Fuse a SmolLM attention block — rotary, KV-expand, scores, softmax — into one GroupQueryAttention kernel with staged projection splices.</p>
+                <div class="case-metric"><span class="cm-val">One fused kernel</span><span class="cm-lab">from ~50 primitive ops</span></div>
             </div>
             <div class="case-card">
-                <div class="case-tag">Serving</div>
+                <div class="case-tag">Serving · SmolLM-135M</div>
                 <h3>Prefill / decode split</h3>
-                <p>Derive two fixed-shape serving graphs from one export — a prefill that reads the prompt once and a decode step over a KV cache — rules end to end.</p>
-                <div class="case-metric"><span class="cm-val">2.67×</span><span class="cm-lab">faster per-token decode</span></div>
+                <p>Derive two fixed-shape serving graphs from one SmolLM-135M export — a prefill that reads the prompt once and a decode step over a KV cache — rules end to end.</p>
+                <div class="case-metric"><span class="cm-val">Faster decode</span><span class="cm-lab">KV-cache step vs full re-run</span></div>
             </div>
         </div>
     </section>
