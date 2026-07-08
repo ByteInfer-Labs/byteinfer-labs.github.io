@@ -62,126 +62,29 @@
         </div>
     </section>
 
-    <!-- How it works -->
-    <section class="how-section">
-        <h2 class="section-title">How it works</h2>
-        <p class="section-sub">A rule names a pattern of operators, then the commands that change the matched site. Three moves cover most work.</p>
-
-        <div class="how-columns">
-            <div class="how-col">
-                <div class="how-step">1</div>
-                <h3>Match</h3>
-                <p class="how-file">pattern</p>
-                <pre class="code-block"><code><span class="cm"># a linear chain, aliased</span>
-<span class="fn">Conv</span>#conv <span class="kw">-&gt;</span> <span class="fn">BatchNormalization</span>#bn
-<span class="cm"># constrain by attribute or name</span>
-<span class="fn">Conv</span>#c[name<span class="kw">!=</span><span class="str">"Conv_0"</span>]</code></pre>
-                <p class="how-note">Names operators and the dataflow between them.</p>
-            </div>
-
-            <div class="how-arrow">→</div>
-
-            <div class="how-col">
-                <div class="how-step">2</div>
-                <h3>Rewrite</h3>
-                <p class="how-file">transform block</p>
-                <pre class="code-block"><code><span class="kw">transform</span> bn <span class="kw">replace</span> {
-  nodes:
-    <span class="fn">Constant</span>#w file=<span class="str">"{conv.name}_w"</span>
-  flow:
-    w <span class="kw">-&gt;</span> conv.input[1]
-    conv.output[0] <span class="kw">-&gt;</span> bn.output[0]
-}</code></pre>
-                <p class="how-note">Insert, delete, rewire, or set attributes — as one unit.</p>
-            </div>
-
-            <div class="how-arrow">→</div>
-
-            <div class="how-col">
-                <div class="how-step">3</div>
-                <h3>Validate &amp; apply</h3>
-                <p class="how-file">terminal</p>
-                <pre class="code-block code-terminal"><code><span class="prompt">$</span> rune-cli optimize model.onnx \
-    --rules fold.rune \
-    --report out.html
-
-<span class="dim">  every site · 0 refusals</span>
-<span class="accent">  leaner graph · outputs bit-identical</span></code></pre>
-                <p class="how-note">The gate checks every site; the report shows before/after.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Command vocabulary -->
-    <section class="vocab-section">
-        <h2 class="section-title">The command vocabulary</h2>
-        <p class="section-sub">The whole language at a glance — a handful of symbols that compose into any rewrite.</p>
-        <div class="cmdgrid">
-            <div class="cmdcard"><span class="cmdsym">Op#alias</span><span class="cmdname">Match</span><span class="cmddesc">Match an operator and name it for later reference.</span><span class="cmdex">Conv#conv</span></div>
-            <div class="cmdcard"><span class="cmdsym">-&gt;</span><span class="cmdname">Chain</span><span class="cmddesc">A sequential pattern following the dataflow.</span><span class="cmdex">Conv#c -&gt; Relu#r</span></div>
-            <div class="cmdcard"><span class="cmdsym">[ … ]</span><span class="cmdname">Constrain</span><span class="cmddesc">Filter matches by attribute or node name.</span><span class="cmdex">Conv#c[name!="Conv_0"]</span></div>
-            <div class="cmdcard"><span class="cmdsym">!</span><span class="cmdname">Delete</span><span class="cmddesc">Remove a node; its consumers rewire to its input.</span><span class="cmdex">! id</span></div>
-            <div class="cmdcard"><span class="cmdsym">@</span><span class="cmdname">Set attribute</span><span class="cmddesc">Change an attribute on a matched node.</span><span class="cmdex">@ conv.group = 2</span></div>
-            <div class="cmdcard"><span class="cmdsym">+</span><span class="cmdname">Insert</span><span class="cmddesc">Add a new node into the graph.</span><span class="cmdex">+ LayerNormalization#ln</span></div>
-            <div class="cmdcard"><span class="cmdsym">&gt;</span><span class="cmdname">Connect</span><span class="cmddesc">Wire an edge between two named ports.</span><span class="cmdex">&gt; a.output[0] -&gt; b.input[0]</span></div>
-            <div class="cmdcard"><span class="cmdsym">transform { }</span><span class="cmdname">Block</span><span class="cmddesc">Build a multi-node subgraph, validated as one unit.</span><span class="cmdex">transform c replace { … }</span></div>
-        </div>
-    </section>
-
-    <!-- Figure: LayerNorm fold -->
+    <!-- Graph gallery -->
     <section class="figure-section">
-        <h2 class="section-title">One rule, thirteen ops gone</h2>
-        <p class="section-sub">Frameworks often spell a single operation as a tree of primitives the runtime never fuses. A rule inserts the real operator; the primitive subtree loses its consumers and is pruned.</p>
-        <div class="figframe">
-            <div class="plate">
-                <div class="legend">
-                    <span><span class="sw" style="background:var(--nd-dead-fill);border:1px dashed var(--edge-dead)"></span> pruned</span>
-                    <span><span class="sw" style="background:var(--nd-new-fill);border:1px solid var(--accent)"></span> inserted</span>
-                </div>
-                <div class="gpanel">
-                    <div class="glbl">Before — TensorFlow LayerNorm</div>
-                    <div class="gscroll">
-                        <svg viewBox="0 0 560 64" width="560" height="64" role="img" aria-label="input into a 13-op primitive block into output">
-                            <path class="e-dead" d="M84 32 L150 32" marker-end="url(#adead)"></path>
-                            <path class="e-del" d="M390 32 L456 32" marker-end="url(#adel)"></path>
-                            <rect class="node-port" x="8" y="20" width="76" height="24" rx="10"></rect>
-                            <text class="t-port" x="46" y="35" text-anchor="middle">input</text>
-                            <rect class="node-dead" x="150" y="13" width="240" height="38" rx="6"></rect>
-                            <text class="op t-dead" x="270" y="30" text-anchor="middle">ReduceMean · Sub · Mul · …</text>
-                            <text class="nm" x="270" y="43" text-anchor="middle">13 primitive ops</text>
-                            <rect class="node-port" x="456" y="20" width="86" height="24" rx="10"></rect>
-                            <text class="t-port" x="499" y="35" text-anchor="middle">output</text>
-                            <defs>
-                                <marker id="adead" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="var(--edge-dead)"></path></marker>
-                                <marker id="adel" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="var(--del)"></path></marker>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-                <div class="gpanel">
-                    <div class="glbl">After — one fused operator</div>
-                    <div class="gscroll">
-                        <svg viewBox="0 0 560 64" width="560" height="64" role="img" aria-label="input into a single LayerNormalization into output">
-                            <path class="e-new" d="M84 32 L178 32" marker-end="url(#anew)"></path>
-                            <path class="e-new" d="M382 32 L456 32" marker-end="url(#anew)"></path>
-                            <rect class="node-port" x="8" y="20" width="76" height="24" rx="10"></rect>
-                            <text class="t-port" x="46" y="35" text-anchor="middle">input</text>
-                            <rect class="node-new" x="178" y="12" width="204" height="40" rx="6"></rect>
-                            <text class="op t-new" x="280" y="29" text-anchor="middle">LayerNormalization</text>
-                            <text class="nm" x="280" y="43" text-anchor="middle">ε = 1e-12</text>
-                            <rect class="node-port" x="456" y="20" width="86" height="24" rx="10"></rect>
-                            <text class="t-port" x="499" y="35" text-anchor="middle">output</text>
-                            <defs>
-                                <marker id="anew" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"></path></marker>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
+        <h2 class="section-title">See the rewrites</h2>
+        <p class="section-sub">Pick a transform. The graph on the left is what the model ships with; the right is what Rune leaves behind — inserted nodes in accent, removed nodes dashed and pruned.</p>
+        <div id="graph-gallery" data-active="lora">
+            <div class="gg-btns">
+                <button class="rulebtn" data-g="identity">Identity removal</button>
+                <button class="rulebtn" data-g="bnfold">Conv + BatchNorm</button>
+                <button class="rulebtn" data-g="layernorm">LayerNorm fusion</button>
+                <button class="rulebtn" data-g="gqa">Attention &#8594; GQA</button>
+                <button class="rulebtn" data-g="lora">LoRA inject</button>
+                <button class="rulebtn" data-g="qdq">INT8 prep</button>
             </div>
-            <div class="figtext">
-                <p>The pattern matches the thirteen-operator idiom and inserts a single <code>LayerNormalization</code>. Once its output feeds the downstream consumer, the primitive subtree is dead and pruned automatically.</p>
-                <p>On <strong>BERT-Squad</strong> this fusion, applied at every LayerNorm site, runs measurably faster than ONNX Runtime at its most aggressive optimization level — and the outputs stay bit-identical to the original.</p>
+            <div class="gg-stage">
+                <div class="gg-half"><div class="gg-glabel">Before</div><div class="gg-g" id="gg-before"></div></div>
+                <div class="gg-arrow">&#8594;</div>
+                <div class="gg-half"><div class="gg-glabel">After</div><div class="gg-g" id="gg-after"></div></div>
             </div>
+            <div class="gg-legend">
+                <span><span class="gg-sw" style="background:var(--nd-new-fill);border:1px solid var(--accent)"></span> inserted</span>
+                <span><span class="gg-sw" style="background:var(--nd-dead-fill);border:1px dashed var(--edge-dead)"></span> pruned</span>
+            </div>
+            <p class="gg-note" id="gg-note"></p>
         </div>
     </section>
 
@@ -295,5 +198,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="assets/dagre.min.js"></script>
+    <script src="graphs.js"></script>
 </body>
 </html>
